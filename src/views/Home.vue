@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>{{ name }}</h1>
+    <p>{{ name }}</p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
-  name: "home",
-  components: {
-    HelloWorld
+  metaInfo: {
+    title: "Lazy Programmer's Stuff",
+    meta: [
+      {
+        name: "theme-color",
+        content: "#3F51B5"
+      }
+    ]
+  },
+  data() {
+    return {
+      name: "Lazy Programmer's Stuff"
+    };
   }
 };
 </script>
