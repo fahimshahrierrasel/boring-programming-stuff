@@ -32,8 +32,7 @@ export default {
     drawer: false,
     drawerItems: [
       { title: "Home", icon: "home" },
-      { title: "Arrays", icon: "dashboard" },
-      { title: "About", icon: "account_box" }
+      { title: "Arrays", icon: "dashboard" }
     ]
   }),
   mounted() {
