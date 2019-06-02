@@ -12,9 +12,9 @@
                     <v-text-field
                       v-model="min_number"
                       label="Minimum Number"
-                      :mask="number_mask"
                       outline
                       class="ma-1"
+                      type="number"
                       @change="getNumbers()"
                     ></v-text-field>
                   </v-flex>
@@ -23,9 +23,9 @@
                     <v-text-field
                       v-model="max_number"
                       label="Maximum Number"
-                      :mask="number_mask"
                       outline
                       class="ma-1"
+                      type="number"
                       @change="getNumbers()"
                     ></v-text-field>
                   </v-flex>
@@ -88,7 +88,6 @@ export default {
   },
   data() {
     return {
-      number_mask: "######",
       min_number: 1,
       max_number: 100,
       total_number: 10,
