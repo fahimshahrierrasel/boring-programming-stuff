@@ -1,28 +1,22 @@
-# boring-programming-stuff
+# Boring Programming Stuff
 
-## Project setup
-```
+## [Live Demo](https://fahimshahrierrasel.github.io/boring-programming-stuff/)
+
+### Project setup and Running
+```bash
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+Compiles and hot-reloads for development
+```bash
+yarn serve
 ```
-yarn run serve
+Compiles and minifies for production
+```bash
+yarn build
 ```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
+ Lints and fixes files
+```bash
+yarn lint
 ```
 
 ### Customize configuration
