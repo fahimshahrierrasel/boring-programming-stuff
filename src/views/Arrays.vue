@@ -1,58 +1,70 @@
 <template>
   <div class="arrays">
-    <v-layout class="mb-5">
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Random Number Array</h3>
-              <div>
-                <v-layout row wrap>
-                  <v-flex lg6 xs12 md12>
-                    <v-text-field
-                      v-model="min_number"
-                      label="Minimum Number"
-                      outline
-                      class="ma-1"
-                      type="number"
-                      @change="getNumbers()"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex lg6 xs12 md12>
-                    <v-text-field
-                      v-model="max_number"
-                      label="Maximum Number"
-                      outline
-                      class="ma-1"
-                      type="number"
-                      @change="getNumbers()"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex lg12 xs12 md12>
-                    <v-subheader class="pl-0">Total Random Number</v-subheader>
-                    <v-slider
-                      v-model="total_number"
-                      thumb-label="always"
-                      @change="getNumbers()"
-                    ></v-slider>
-                  </v-flex>
-                  <v-flex lg12 xs12 md12>
-                    <v-checkbox
-                      color="primary"
-                      v-model="sorted"
-                      :label="`${sorted ? 'Sorted' : 'Unsorted'}`"
-                      @change="sortArray()"
-                    ></v-checkbox>
-                  </v-flex>
-                </v-layout>
-              </div>
-            </div>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <div>
+    <v-flex xs12 sm6 offset-sm3 mb-3>
+      <v-tabs color="primary" dark slider-color="red">
+        <v-tab ripple>Integer Arrays</v-tab>
+        <v-tab ripple>String Arrays</v-tab>
+        <v-tab-item>
+          <v-card>
+            <v-card-title primary-title>
+              <v-layout row wrap>
+                <v-flex lg6 xs12 md12>
+                  <v-text-field
+                    v-model="min_number"
+                    label="Minimum Number"
+                    outline
+                    class="ma-1"
+                    type="number"
+                    @change="getNumbers()"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex lg6 xs12 md12>
+                  <v-text-field
+                    v-model="max_number"
+                    label="Maximum Number"
+                    outline
+                    class="ma-1"
+                    type="number"
+                    @change="getNumbers()"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex lg12 xs12 md12>
+                  <v-subheader class="pl-0">Total Random Number</v-subheader>
+                  <v-slider
+                    v-model="total_number"
+                    thumb-label="always"
+                    @change="getNumbers()"
+                  ></v-slider>
+                </v-flex>
+                <v-flex lg12 xs12 md12>
+                  <v-checkbox
+                    color="primary"
+                    v-model="sorted"
+                    :label="`${sorted ? 'Sorted' : 'Unsorted'}`"
+                    @change="sortArray()"
+                  ></v-checkbox>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card>
+            <v-card-title primary-title>
+              <v-flex>
+                <v-subheader class="pl-0">Total Random String</v-subheader>
+                <v-slider
+                  v-model="total_number_string"
+                  thumb-label="always"
+                  @change="getStrings()"
+                ></v-slider>
+              </v-flex>
+            </v-card-title>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </v-flex>
+    <v-flex>
       <v-tabs color="primary" dark slider-color="red">
         <v-tab v-for="language in languages" :key="language.lang" ripple>{{
           language.lang
@@ -71,11 +83,12 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
-    </div>
+    </v-flex>
   </div>
 </template>
 
 <script>
+import faker from "faker";
 export default {
   metaInfo: {
     title: "Lazy Programmer's Stuff",
@@ -90,7 +103,8 @@ export default {
     return {
       min_number: 1,
       max_number: 100,
-      total_number: 10,
+      total_number: 5,
+      total_number_string: 5,
       sorted: false,
       languages: [
         {
@@ -114,16 +128,19 @@ export default {
           src: "let array = []"
         }
       ],
-      numbers: []
+      numbers: [],
+      strings: []
     };
   },
-  mounted() {},
+  mounted() {
+    this.getNumbers();
+  },
   methods: {
     sortArray() {
       if (this.sorted) {
         let tempNumber = this.numbers;
         this.numbers = tempNumber.sort((a, b) => a - b);
-        this.makeSourceCode();
+        this.makeIntegerArraySourceCode();
       }
     },
     getNumbers() {
@@ -137,14 +154,22 @@ export default {
         );
       }
       this.sortArray();
-      this.makeSourceCode();
+      this.makeIntegerArraySourceCode();
     },
-    makeSourceCode() {
+    getStrings() {
+      for (var i = 0; i < this.total_number_string; i++) {
+        this.strings.push(faker.random.word().toLowerCase());
+      }
+      let concatedString = this.strings.join('", "');
+      concatedString = `"${concatedString}"`;
+      this.makeStringArraySourceCode(concatedString);
+    },
+    makeIntegerArraySourceCode() {
       this.languages.forEach(language => {
         if (language.lang === "cpp") {
           language.src = `int array[] = {${this.numbers}};`;
         } else if (language.lang === "java") {
-          language.src = `int[] array = new int[]{${this.numbers}};`;
+          language.src = `int[] array = {${this.numbers}};`;
         } else if (language.lang === "kotlin") {
           language.src = `val array = arrayOf(${this.numbers})`;
         } else if (language.lang === "python") {
@@ -153,12 +178,25 @@ export default {
           language.src = `let array = [${this.numbers}]`;
         }
       });
+    },
+    makeStringArraySourceCode(concatedString) {
+      this.languages.forEach(language => {
+        if (language.lang === "cpp") {
+          language.src = `string array[${
+            this.total_number_string
+          }] = {${concatedString}};`;
+        } else if (language.lang === "java") {
+          language.src = `String[] array = {${concatedString}};`;
+        } else if (language.lang === "kotlin") {
+          language.src = `val array = arrayOf(${concatedString})`;
+        } else if (language.lang === "python") {
+          language.src = `array = [${concatedString}]`;
+        } else if (language.lang === "javascript") {
+          language.src = `let array = [${concatedString}]`;
+        }
+      });
     }
   },
-  computed: {
-    sourceCode() {
-      return this.getNumbers();
-    }
-  }
+  computed: {}
 };
 </script>
